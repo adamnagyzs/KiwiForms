@@ -13,7 +13,7 @@
     "clean": "turbo clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "turbo": "^2.5.4",
+    "turbo": "^2.10.4",
     "typescript": "^5.8.3"
   },
   "engines": {
