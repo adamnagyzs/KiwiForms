@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import type { ApiResponse, HealthCheckResponse } from '@kiwiforms/types';
+import type { HealthCheckResponse } from '@kiwiforms/types';
 import { Public } from './auth/decorators/public.decorator';
 import { AppService } from './app.service';
 
@@ -9,9 +9,7 @@ export class AppController {
 
   @Public()
   @Get('health')
-  getHealth(): ApiResponse<HealthCheckResponse> {
-    return {
-      data: this.appService.getHealth(),
-    };
+  getHealth(): HealthCheckResponse {
+    return this.appService.getHealth();
   }
 }

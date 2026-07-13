@@ -14,6 +14,9 @@ export interface AuthUser {
 export interface JwtPayload {
   sub: string;
   email: string;
+  user_metadata?: {
+    name?: string;
+  };
 }
 
 export interface ApiResponse<T> {
@@ -22,7 +25,7 @@ export interface ApiResponse<T> {
 }
 
 export interface HealthCheckResponse {
-  status: 'ok' | 'error';
+  status: "ok" | "error";
   timestamp: string;
 }
 
@@ -31,12 +34,16 @@ export interface CreateUserDto {
   name: string;
 }
 
-export interface LoginDto {
-  email: string;
-  password: string;
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
 }
 
-export interface LoginResponse {
+export interface SignInResponse {
   accessToken: string;
+  refreshToken: string;
   user: AuthUser;
 }
+
+export * from "./database/database.types";
+export * from "./auth/auth.dto";
