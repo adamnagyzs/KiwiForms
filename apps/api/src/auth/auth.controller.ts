@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import type {
   DatabaseUser,
   SignInDto,
@@ -29,5 +29,10 @@ export class AuthController {
   @Get("me")
   getMe(@CurrentUser() user: DatabaseUser): DatabaseUser {
     return user;
+  }
+
+  @Get("user/:id")
+  async getUser(@Param("id") userId: string): Promise<DatabaseUser> {
+    return this.authService.getUser(userId);
   }
 }
