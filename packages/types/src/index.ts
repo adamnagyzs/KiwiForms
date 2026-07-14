@@ -13,3 +13,4 @@ export interface HealthCheckResponse {
 
 export * from "./database/database.types";
 export * from "./auth/auth.dto";
+export * from "./error/http-error";

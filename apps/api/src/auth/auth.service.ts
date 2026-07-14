@@ -96,6 +96,23 @@ export class AuthService {
     };
   }
 
+  async getUser(userId: string): Promise<DatabaseUser> {
+    const { data: databaseUser, error: databaseUserError } =
+      await this.supabaseAdmin
+        .from("users")
+        .select("*")
+        .eq("id", userId)
+        .single<DatabaseUser>();
+
+    if (databaseUserError) {
+      throw new BadRequestException(
+        `Failed to get user: ${databaseUserError.message}`,
+      );
+    }
+
+    return databaseUser;
+  }
+
   async getUserFromJwtPayload(payload: JwtPayload): Promise<DatabaseUser> {
     if (!payload.sub || !payload.email) {
       throw new UnauthorizedException();
