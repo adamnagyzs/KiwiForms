@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ApiResponse, HealthCheckResponse } from "@kiwiforms/types";
+import type { HealthCheckResponse } from "@kiwiforms/types";
 import "./App.css";
 
 function App() {
@@ -11,9 +11,9 @@ function App() {
     fetch("/api/health")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json() as Promise<ApiResponse<HealthCheckResponse>>;
+        return res.json() as Promise<HealthCheckResponse>;
       })
-      .then((json) => setHealth(json.data))
+      .then((health) => setHealth(health))
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);

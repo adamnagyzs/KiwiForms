@@ -1,9 +1,9 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import type { AuthUser } from '@kiwiforms/types';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import type { DatabaseUser } from "@kiwiforms/types";
 
 export const CurrentUser = createParamDecorator(
-  (_data: unknown, context: ExecutionContext): AuthUser => {
-    const request = context.switchToHttp().getRequest<{ user: AuthUser }>();
+  (_data: unknown, context: ExecutionContext): DatabaseUser => {
+    const request = context.switchToHttp().getRequest<{ user: DatabaseUser }>();
     return request.user;
   },
 );
