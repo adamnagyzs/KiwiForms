@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { passportJwtSecret } from "jwks-rsa";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import type { AuthUser, JwtPayload } from "@kiwiforms/types";
+import type { DatabaseUser, JwtPayload } from "@kiwiforms/types";
 import { AuthService } from "../auth.service";
 
 @Injectable()
@@ -31,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: JwtPayload): AuthUser {
-    return this.authService.validateUser(payload);
+  async validate(payload: JwtPayload): Promise<DatabaseUser> {
+    return await this.authService.getUserFromJwtPayload(payload);
   }
 }

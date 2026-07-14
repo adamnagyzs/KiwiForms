@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import type {
-  AuthUser,
+  DatabaseUser,
   SignInDto,
   SignInResponse,
   SignUpDto,
@@ -27,7 +27,7 @@ export class AuthController {
   }
 
   @Get("me")
-  getMe(@CurrentUser() user: AuthUser): AuthUser {
+  getMe(@CurrentUser() user: DatabaseUser): DatabaseUser {
     return user;
   }
 }

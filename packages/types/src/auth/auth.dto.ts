@@ -7,7 +7,7 @@ import {
   MinLength,
 } from "class-validator";
 import type { Database } from "../database/database.types";
-
+import type { Session } from "@supabase/supabase-js";
 export class SignUpDto {
   @IsEmail()
   @IsNotEmpty()
@@ -42,4 +42,9 @@ export class SignInDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class SignInResponse {
+  authUser: User;
+  databaseUser: DatabaseUser;
 }

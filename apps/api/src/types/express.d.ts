@@ -1,8 +1,8 @@
-import type { AuthUser } from '@kiwiforms/types';
+import type { DatabaseUser } from "@kiwiforms/types";
 
 declare global {
   namespace Express {
-    interface User extends AuthUser {}
+    interface User extends DatabaseUser {}
   }
 }
 

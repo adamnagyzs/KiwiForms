@@ -4,10 +4,8 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { SupabaseClient } from "@supabase/supabase-js";
 import type {
-  AuthUser,
   JwtPayload,
   SignInDto,
   SignInResponse,
@@ -15,16 +13,22 @@ import type {
   SignUpResponse,
   DatabaseUser,
 } from "@kiwiforms/types";
-import { SUPABASE_CLIENT } from "../supabase/supabase.constants";
+import {
+  SUPABASE_ADMIN_CLIENT,
+  SUPABASE_AUTH_CLIENT,
+} from "../supabase/supabase.constants";
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(SUPABASE_CLIENT) private readonly supabase: SupabaseClient,
+    @Inject(SUPABASE_ADMIN_CLIENT)
+    private readonly supabaseAdmin: SupabaseClient,
+    @Inject(SUPABASE_AUTH_CLIENT)
+    private readonly supabaseAuth: SupabaseClient,
   ) {}
 
   async signUp({ email, password, name }: SignUpDto): Promise<SignUpResponse> {
-    const { data, error } = await this.supabase.auth.admin.createUser({
+    const { data, error } = await this.supabaseAdmin.auth.admin.createUser({
       email,
       password,
       email_confirm: true, // Auto-confirm email for now
@@ -38,7 +42,7 @@ export class AuthService {
       throw new BadRequestException("Unable to create account");
     }
 
-    const { data: user, error: databaseUserError } = await this.supabase
+    const { data: user, error: databaseUserError } = await this.supabaseAdmin
       .from("users")
       .insert<DatabaseUser>({
         email,
@@ -62,39 +66,53 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInDto): Promise<SignInResponse> {
-    const { data, error } = await this.supabase.auth.signInWithPassword({
+    const {
+      data: { user: authUser, session },
+      error,
+    } = await this.supabaseAuth.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error || !data.session || !data.user) {
+    if (error || !session || !authUser) {
       throw new UnauthorizedException("Invalid credentials");
     }
 
+    const { data: user, error: databaseUserError } = await this.supabaseAdmin
+      .from("users")
+      .select("*")
+      .eq("id", authUser.id)
+      .single<DatabaseUser>();
+
+    if (!user || databaseUserError) {
+      throw new BadRequestException(
+        databaseUserError?.message ?? "Unable to sign in",
+      );
+    }
+
     return {
-      accessToken: data.session.access_token,
-      refreshToken: data.session.refresh_token,
-      user: this.toAuthUser(data.user),
+      authUser,
+      databaseUser: user,
     };
   }
 
-  validateUser(payload: JwtPayload): AuthUser {
+  async getUserFromJwtPayload(payload: JwtPayload): Promise<DatabaseUser> {
     if (!payload.sub || !payload.email) {
       throw new UnauthorizedException();
     }
 
-    return {
-      id: payload.sub,
-      email: payload.email,
-      name: payload.user_metadata?.name ?? "",
-    };
-  }
+    const { data: user, error: databaseUserError } = await this.supabaseAdmin
+      .from("users")
+      .select("*")
+      .eq("id", payload.sub)
+      .single<DatabaseUser>();
 
-  private toAuthUser(user: SupabaseUser): AuthUser {
-    return {
-      id: user.id,
-      email: user.email ?? "",
-      name: (user.user_metadata?.name as string | undefined) ?? "",
-    };
+    if (!user || databaseUserError) {
+      throw new BadRequestException(
+        databaseUserError?.message ?? "Unable to get user",
+      );
+    }
+
+    return user;
   }
 }
