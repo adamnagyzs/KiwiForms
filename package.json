@@ -19,5 +19,8 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.8.2"
+  "packageManager": "npm@10.8.2",
+  "dependencies": {
+    "lightningcss-linux-x64-gnu": "^1.32.0"
+  }
 }
