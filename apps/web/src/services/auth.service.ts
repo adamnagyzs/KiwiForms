@@ -1,5 +1,5 @@
 import { axiosClient } from "@/libs/axios";
-import { DatabaseUser } from "@kiwiforms/types";
+import { DatabaseUser, SignUpDto, SignUpResponse } from "@kiwiforms/types";
 
 // Function to fetch user from database via API
 const fetchMe = async (): Promise<DatabaseUser> => {
@@ -14,7 +14,14 @@ const fetchUser = async (userId: string): Promise<DatabaseUser> => {
   return response.data;
 };
 
+const signUp = async (dto: SignUpDto) => {
+  const response = await axiosClient.post<SignUpResponse>(`/auth/signup`);
+
+  return response.data;
+};
+
 export const authService = Object.freeze({
   fetchMe,
   fetchUser,
+  signUp,
 });

@@ -3,6 +3,8 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { unauthenticatedRoutePaths } from "@/config/router-paths";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "@/services/auth.service";
 
 import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
@@ -40,8 +42,17 @@ export default function SignupForm() {
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) });
   const navigate = useNavigate();
 
+  const { mutateAsync } = useMutation({
+    mutationFn: authService.signUp,
+  });
+
   const onSubmit: SubmitHandler<SignupForm> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const dto = {
+      email: data.email,
+      password: data.password,
+      name: data.userName,
+    };
+    await mutateAsync(dto);
   };
 
   return (
