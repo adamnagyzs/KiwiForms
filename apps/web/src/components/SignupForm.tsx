@@ -36,7 +36,7 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) });
   const navigate = useNavigate();
 
