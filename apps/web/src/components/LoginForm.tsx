@@ -1,4 +1,9 @@
+import { unauthenticatedRoutePaths } from "@/config/router-paths";
+import { useNavigate } from "react-router-dom";
+
 export default function LoginForm() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-400/80">
       <div className="w-full max-w-md p-8 bg-teal-600 shadow-2xl rounded-xl">
@@ -37,6 +42,7 @@ export default function LoginForm() {
           Don't have an account?{" "}
           <button
             type="button"
+            onClick={() => navigate(unauthenticatedRoutePaths.signUp)}
             className="font-semibold text-white underline transition-colors cursor-pointer hover:text-teal-200"
           >
             Sign Up

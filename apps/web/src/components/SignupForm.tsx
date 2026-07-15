@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { unauthenticatedRoutePaths } from "@/config/router-paths";
+import { useNavigate } from "react-router-dom";
 
 import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
@@ -34,14 +36,12 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) });
-
-  console.log(errors);
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignupForm> = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
   };
 
   return (
@@ -118,6 +118,7 @@ export default function SignupForm() {
           Already have an account?{" "}
           <button
             type="button"
+            onClick={() => navigate(unauthenticatedRoutePaths.signIn)}
             className="font-semibold text-white underline transition-colors cursor-pointer hover:text-teal-200"
           >
             Sign In

@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DatabaseUser } from "@kiwiforms/types";
 import { Session } from "@supabase/supabase-js";
+import { LoadingScreen } from "@/components/ui/loading-screen";
 
 type UserContextType = {
   session: Session;
@@ -18,7 +19,7 @@ function UserProvider({ children }: UserProviderProps) {
   const { session, databaseUser, isLoading, isError, isSuccess } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (isError || !isSuccess) {
