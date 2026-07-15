@@ -4,6 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { unauthenticatedRoutePaths } from "@/config/router-paths";
 import { useNavigate } from "react-router-dom";
 
+import TextInput from "./TextInput";
+import ErrorMessage from "./ErrorMessage";
+
 const signupSchema = z
   .object({
     email: z.email("Invalid email"),
@@ -49,71 +52,58 @@ export default function SignupForm() {
         </h2>
 
         <form className="space-y-4 px-2" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="block mb-1 text-sm font-medium text-teal-50">
-              Email
-            </label>
-            <input
-              {...register("email")}
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 text-gray-900 bg-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
-            />
-          </div>
+          <TextInput
+            label="Email"
+            error={errors.email?.message}
+            {...register("email")}
+            type="email"
+            placeholder="Email"
+          />
 
-          <div>
-            <label className="block mb-1 text-sm font-medium text-teal-50">
-              Password
-            </label>
-            <input
-              {...register("password")}
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 text-gray-900 bg-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
-            />
-          </div>
+          <TextInput
+            label="Password"
+            error={errors.password?.message}
+            {...register("password")}
+            type="password"
+            placeholder="Password"
+          />
 
-          <div>
-            <label className="block mb-1 text-sm font-medium text-teal-50">
-              Confirm Password
-            </label>
-            <input
-              {...register("confirmPassword")}
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full px-4 py-2 text-gray-900 bg-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
-            />
-          </div>
+          <TextInput
+            label="Confirm Password"
+            error={errors.confirmPassword?.message}
+            {...register("confirmPassword")}
+            type="password"
+            placeholder="Password"
+          />
 
-          <div>
-            <label className="block mb-1 text-sm font-medium text-teal-50">
-              Displayed Username
-            </label>
-            <input
-              {...register("userName")}
-              type="text"
-              placeholder="Username"
-              className="w-full px-4 py-2 text-gray-900 bg-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-300"
-            />
-          </div>
+          <TextInput
+            label="Displayed Username"
+            error={errors.userName?.message}
+            {...register("userName")}
+            type="text"
+            placeholder="Username"
+          />
 
-          <div className="flex gap-1.5">
+          <div className="flex gap-2 items-start">
             <input
               {...register("terms")}
-              required
               type="checkbox"
-              className="text-sm text-teal-100"
+              className={`mt-1 size-4 rounded cursor-pointer
+      ${errors.terms ? "accent-red-500" : "accent-teal-300"}`}
             />
-            <label className="block mb-1 text-sm font-medium text-teal-50">
+
+            <label className="text-sm font-medium text-teal-50">
               I agree to the{" "}
               <button
                 type="button"
-                className="mt-1.5 text-white underline transition-colors cursor-pointer hover:text-teal-200"
+                className="text-white underline transition-colors cursor-pointer hover:text-teal-200"
               >
                 Terms and Conditions
               </button>
             </label>
           </div>
+
+          <ErrorMessage message={errors.terms?.message} />
 
           <button
             type="submit"
