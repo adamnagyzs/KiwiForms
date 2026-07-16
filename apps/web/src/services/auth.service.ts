@@ -27,7 +27,9 @@ const signUp = async (dto: SignUpDto) => {
 };
 
 const signIn = async (dto: SignInDto) => {
-  const response = await axiosClient.post<SignInResponse>(`/auth/signin`, dto);
+  const response = await axiosClient.post<SignInResponse>(`/auth/signin`, dto, {
+    disableToast: true,
+  });
 
   return response.data;
 };

@@ -35,4 +35,9 @@ export class AuthController {
   async getUser(@Param("id") userId: string): Promise<DatabaseUser> {
     return this.authService.getUser(userId);
   }
+
+  @Post("signout")
+  signOut(): Promise<void> {
+    return this.authService.signOut();
+  }
 }

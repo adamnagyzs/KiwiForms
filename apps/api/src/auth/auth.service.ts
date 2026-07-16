@@ -132,4 +132,8 @@ export class AuthService {
 
     return user;
   }
+
+  async signOut(): Promise<void> {
+    await this.supabaseAuth.auth.signOut();
+  }
 }

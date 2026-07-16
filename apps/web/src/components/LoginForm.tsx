@@ -31,9 +31,6 @@ export default function LoginForm() {
 
   const { mutateAsync } = useMutation({
     mutationFn: authService.signIn,
-    onSuccess: () => {
-      navigate(authenticatedRoutePaths.home);
-    },
   });
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
@@ -43,6 +40,7 @@ export default function LoginForm() {
     };
 
     await mutateAsync(dto);
+    navigate(authenticatedRoutePaths.home);
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-400/80">
