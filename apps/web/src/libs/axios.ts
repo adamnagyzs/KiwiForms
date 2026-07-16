@@ -15,7 +15,7 @@ declare module "axios" {
 
 // Create axios instance with default configuration
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/",
   timeout: 100000, // 100 seconds
   headers: {
     "Content-Type": "application/json",

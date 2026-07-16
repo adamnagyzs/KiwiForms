@@ -2,10 +2,12 @@ import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { unauthenticatedRoutePaths } from "@/config/router-paths";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "@/services/auth.service";
 
 import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
+import { Link } from "react-router-dom";
 
 const signupSchema = z
   .object({
@@ -38,10 +40,18 @@ export default function SignupForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) });
-  const navigate = useNavigate();
+
+  const { mutateAsync } = useMutation({
+    mutationFn: authService.signUp,
+  });
 
   const onSubmit: SubmitHandler<SignupForm> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const dto = {
+      email: data.email,
+      password: data.password,
+      name: data.userName,
+    };
+    await mutateAsync(dto);
   };
 
   return (
@@ -116,13 +126,12 @@ export default function SignupForm() {
 
         <p className="mt-6 text-sm text-center text-teal-100">
           Already have an account?{" "}
-          <button
-            type="button"
-            onClick={() => navigate(unauthenticatedRoutePaths.signIn)}
+          <Link
+            to={unauthenticatedRoutePaths.signIn}
             className="font-semibold text-white underline transition-colors cursor-pointer hover:text-teal-200"
           >
             Sign In
-          </button>
+          </Link>
         </p>
       </div>
     </div>
