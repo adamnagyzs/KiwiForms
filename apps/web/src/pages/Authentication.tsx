@@ -5,7 +5,6 @@ export default function AuthenticationPage() {
   return (
     <>
       <SignupForm />
-      <LoginForm />
     </>
   );
 }

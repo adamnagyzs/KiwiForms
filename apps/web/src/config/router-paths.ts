@@ -8,4 +8,5 @@ export const unauthenticatedRoutePaths = Object.freeze({
 
 export const authenticatedRoutePaths = Object.freeze({
   root: "/",
+  home: "/home",
 });

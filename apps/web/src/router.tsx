@@ -10,6 +10,7 @@ import { GuestGuard } from "./components/guards/guest-guard";
 import { AuthGuard } from "./components/guards/auth-guard";
 import { UserLayout } from "./components/layouts/user.layout";
 import { GuestLayout } from "./components/layouts/guest.layout";
+import HomePage from "./pages/HomePage";
 
 const router = createBrowserRouter(
   [
@@ -30,6 +31,10 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Navigate to={unauthenticatedRoutePaths.signIn} replace />,
+    },
+    {
+      path: "/home",
+      element: <HomePage />,
     },
   ],
   {
