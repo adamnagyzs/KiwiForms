@@ -1,11 +1,5 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import type {
-  DatabaseUser,
-  SignInDto,
-  SignInResponse,
-  SignUpDto,
-  SignUpResponse,
-} from "@kiwiforms/types";
+import type { DatabaseUser, SignUpDto, SignUpResponse } from "@kiwiforms/types";
 import { CurrentUser } from "./decorators/current-user.decorator";
 import { Public } from "./decorators/public.decorator";
 import { AuthService } from "./auth.service";
