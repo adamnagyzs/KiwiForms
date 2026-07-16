@@ -15,7 +15,7 @@ const fetchUser = async (userId: string): Promise<DatabaseUser> => {
 };
 
 const signUp = async (dto: SignUpDto) => {
-  const response = await axiosClient.post<SignUpResponse>(`/auth/signup`);
+  const response = await axiosClient.post<SignUpResponse>(`/auth/signup`, dto);
 
   return response.data;
 };
