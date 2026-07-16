@@ -20,12 +20,6 @@ export class AuthController {
     return this.authService.signUp(body);
   }
 
-  @Public()
-  @Post("signin")
-  signIn(@Body() body: SignInDto): Promise<SignInResponse> {
-    return this.authService.signIn(body);
-  }
-
   @Get("me")
   getMe(@CurrentUser() user: DatabaseUser): DatabaseUser {
     return user;
