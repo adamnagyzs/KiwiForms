@@ -11,15 +11,19 @@ import { AuthGuard } from "./components/guards/auth-guard";
 import { UserLayout } from "./components/layouts/user.layout";
 import { GuestLayout } from "./components/layouts/guest.layout";
 import HomePage from "./pages/HomePage";
+import { UserProvider } from "./contexts/user.context";
 
 const router = createBrowserRouter(
   [
     {
-      path: authenticatedRoutePaths.root,
-      element: <RouteWrapper guard={AuthGuard} layout={UserLayout} />,
+      element: (
+        <UserProvider>
+          <RouteWrapper guard={AuthGuard} layout={UserLayout} />
+        </UserProvider>
+      ),
       children: [
         {
-          path: authenticatedRoutePaths.home,
+          path: authenticatedRoutePaths.root,
           element: <HomePage />,
         },
       ],

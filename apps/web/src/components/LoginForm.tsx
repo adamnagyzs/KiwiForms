@@ -1,21 +1,14 @@
-import {
-  authenticatedRoutePaths,
-  unauthenticatedRoutePaths,
-} from "@/config/router-paths";
+import { unauthenticatedRoutePaths } from "@/config/router-paths";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 
 import TextInput from "./TextInput";
-import { authService } from "@/services/auth.service";
+import supabase from "@/libs/supabase";
 
 export default function LoginForm() {
-  const navigate = useNavigate();
-
   const loginSchema = z.object({
     email: z.email(),
     password: z.string(),
@@ -29,18 +22,11 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
 
-  const { mutateAsync } = useMutation({
-    mutationFn: authService.signIn,
-  });
-
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    const dto = {
+    await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
-    };
-
-    await mutateAsync(dto);
-    navigate(authenticatedRoutePaths.home);
+    });
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-400/80">
