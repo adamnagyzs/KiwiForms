@@ -65,37 +65,6 @@ export class AuthService {
     };
   }
 
-  async signIn({ email, password }: SignInDto): Promise<SignInResponse> {
-    const {
-      data: { user: authUser, session },
-      error,
-    } = await this.supabaseAuth.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error || !session || !authUser) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
-
-    const { data: user, error: databaseUserError } = await this.supabaseAdmin
-      .from("users")
-      .select("*")
-      .eq("id", authUser.id)
-      .single<DatabaseUser>();
-
-    if (!user || databaseUserError) {
-      throw new BadRequestException(
-        databaseUserError?.message ?? "Unable to sign in",
-      );
-    }
-
-    return {
-      authUser,
-      databaseUser: user,
-    };
-  }
-
   async getUser(userId: string): Promise<DatabaseUser> {
     const { data: databaseUser, error: databaseUserError } =
       await this.supabaseAdmin
