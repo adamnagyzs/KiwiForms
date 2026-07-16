@@ -18,7 +18,10 @@ const router = createBrowserRouter(
       path: authenticatedRoutePaths.root,
       element: <RouteWrapper guard={AuthGuard} layout={UserLayout} />,
       children: [
-        { path: authenticatedRoutePaths.root, element: <p>Home...</p> },
+        {
+          path: authenticatedRoutePaths.home,
+          element: <HomePage />,
+        },
       ],
     },
     {
@@ -31,10 +34,6 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Navigate to={unauthenticatedRoutePaths.signIn} replace />,
-    },
-    {
-      path: "/home",
-      element: <HomePage />,
     },
   ],
   {
