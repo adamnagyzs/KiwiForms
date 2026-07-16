@@ -32,18 +32,3 @@ export class SignUpResponse {
   authUser: User;
   databaseUser: DatabaseUser;
 }
-
-export class SignInDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
-
-export class SignInResponse {
-  authUser: User;
-  databaseUser: DatabaseUser;
-}
