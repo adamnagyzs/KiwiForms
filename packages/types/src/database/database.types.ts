@@ -14,6 +14,163 @@ export type Database = {
   };
   public: {
     Tables: {
+      answers: {
+        Row: {
+          created_at: string;
+          id: string;
+          question_id: string;
+          submission_id: string;
+          value: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          question_id?: string;
+          submission_id?: string;
+          value: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          question_id?: string;
+          submission_id?: string;
+          value?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "answers_submission_id_fkey";
+            columns: ["submission_id"];
+            isOneToOne: false;
+            referencedRelation: "form_submissions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      form_submissions: {
+        Row: {
+          created_at: string;
+          form_id: string;
+          id: string;
+        };
+        Insert: {
+          created_at?: string;
+          form_id?: string;
+          id?: string;
+        };
+        Update: {
+          created_at?: string;
+          form_id?: string;
+          id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "form_submissions_form_id_fkey";
+            columns: ["form_id"];
+            isOneToOne: false;
+            referencedRelation: "forms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      forms: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: string;
+          title: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          title: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          title?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "forms_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      question_inputs: {
+        Row: {
+          created_at: string;
+          default_value: string;
+          id: string;
+          label: string;
+          placeholder: string;
+          question_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          default_value: string;
+          id?: string;
+          label: string;
+          placeholder: string;
+          question_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          default_value?: string;
+          id?: string;
+          label?: string;
+          placeholder?: string;
+          question_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "question_inputs_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "questions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      questions: {
+        Row: {
+          created_at: string;
+          form_id: string;
+          id: string;
+          input_type: string;
+          title: string;
+        };
+        Insert: {
+          created_at?: string;
+          form_id?: string;
+          id?: string;
+          input_type: string;
+          title: string;
+        };
+        Update: {
+          created_at?: string;
+          form_id?: string;
+          id?: string;
+          input_type?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "questions_form_id_fkey";
+            columns: ["form_id"];
+            isOneToOne: false;
+            referencedRelation: "forms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       users: {
         Row: {
           created_at: string;
@@ -34,6 +191,35 @@ export type Database = {
           name?: string;
         };
         Relationships: [];
+      };
+      validation_rules: {
+        Row: {
+          created_at: string;
+          id: string;
+          question_id: string;
+          rules: Json;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          question_id?: string;
+          rules: Json;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          question_id?: string;
+          rules?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "validation_rules_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: true;
+            referencedRelation: "questions";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: {
