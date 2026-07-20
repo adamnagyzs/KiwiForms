@@ -1,36 +1,3 @@
-import { useMutation } from "@tanstack/react-query";
-import { authService } from "@/services/auth.service";
-import { useNavigate } from "react-router-dom";
-import { unauthenticatedRoutePaths } from "@/config/router-paths";
-import { toast } from "react-hot-toast";
-
 export default function HomePage() {
-  const navigate = useNavigate();
-
-  const { mutateAsync: signOut, isPending } = useMutation({
-    mutationFn: authService.signOut,
-    onSuccess: () => {
-      navigate(unauthenticatedRoutePaths.signIn, {
-        replace: true,
-      });
-    },
-  });
-
-  const onSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      toast.error("Failed to sign out");
-    }
-  };
-
-  return (
-    <button
-      onClick={() => onSignOut()}
-      disabled={isPending}
-      className="w-full px-4 py-3 mt-6 font-bold text-white transition-colors bg-teal-800 rounded-md cursor-pointer hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 focus:ring-offset-teal-600"
-    >
-      {isPending ? "Signing out..." : "Sign out"}
-    </button>
-  );
+  return <h1 className="flex justify-center">Home page</h1>;
 }
