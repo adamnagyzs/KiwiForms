@@ -7,6 +7,8 @@ import {
   SignInResponse,
 } from "@kiwiforms/types";
 
+import supabase from "@/libs/supabase";
+
 // Function to fetch user from database via API
 const fetchMe = async (): Promise<DatabaseUser> => {
   const response = await axiosClient.get<DatabaseUser>(`/auth/me`);
@@ -32,9 +34,18 @@ const signIn = async (dto: SignInDto) => {
   return response.data;
 };
 
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw error;
+  }
+};
+
 export const authService = Object.freeze({
   fetchMe,
   fetchUser,
   signUp,
   signIn,
+  signOut,
 });
