@@ -14,9 +14,11 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "gen:db-types": "bash scripts/generate-database-types.sh"
   },
   "devDependencies": {
+    "supabase": "^2.109.1",
     "typescript": "^5.8.3"
   },
   "dependencies": {
