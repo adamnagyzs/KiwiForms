@@ -1,16 +1,36 @@
-import supabase from "@/libs/supabase";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "@/services/auth.service";
+import { useNavigate } from "react-router-dom";
+import { unauthenticatedRoutePaths } from "@/config/router-paths";
+import { toast } from "react-hot-toast";
 
 export default function HomePage() {
-  const logout = async () => {
-    await supabase.auth.signOut();
+  const navigate = useNavigate();
+
+  const { mutateAsync: signOut, isPending } = useMutation({
+    mutationFn: authService.signOut,
+    onSuccess: () => {
+      navigate(unauthenticatedRoutePaths.signIn, {
+        replace: true,
+      });
+    },
+  });
+
+  const onSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      toast.error("Failed to sign out");
+    }
   };
 
   return (
     <button
-      onClick={logout}
+      onClick={() => signOut()}
+      disabled={isPending}
       className="w-full px-4 py-3 mt-6 font-bold text-white transition-colors bg-teal-800 rounded-md cursor-pointer hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 focus:ring-offset-teal-600"
     >
-      Sign Out
+      {isPending ? "Signing out..." : "Sign out"}
     </button>
   );
 }
