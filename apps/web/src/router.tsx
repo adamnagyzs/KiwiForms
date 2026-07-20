@@ -12,6 +12,7 @@ import { UserLayout } from "./components/layouts/user.layout";
 import { GuestLayout } from "./components/layouts/guest.layout";
 import HomePage from "./pages/HomePage";
 import { UserProvider } from "./contexts/user.context";
+import { CreateForm } from "./pages/CreateForm";
 
 const router = createBrowserRouter(
   [
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
           path: authenticatedRoutePaths.root,
           element: <HomePage />,
         },
+        { path: authenticatedRoutePaths.createForm, element: <CreateForm /> },
       ],
     },
     {
