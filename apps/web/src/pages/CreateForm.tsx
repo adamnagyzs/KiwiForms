@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextInput from "@/components/TextInput";
 import ErrorMessage from "@/components/ErrorMessage";
 
-import type { EditableQuestion } from "../../../../packages/types/src/forms/forms";
+import type { EditableQuestion } from "@kiwiforms/types";
 
 const questionSchema = z.object({
   title: z.string().min(3, "Question must be at least 3 characters"),

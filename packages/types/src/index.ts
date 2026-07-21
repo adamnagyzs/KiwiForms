@@ -11,6 +11,7 @@ export interface HealthCheckResponse {
   timestamp: string;
 }
 
-export * from "./database/database.types";
-export * from "./auth/auth.dto";
-export * from "./error/http-error";
+export * from "./database";
+export * from "./auth";
+export * from "./error";
+export * from "./forms";
