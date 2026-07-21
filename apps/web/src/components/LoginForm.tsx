@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import TextInput from "./TextInput";
 import supabase from "@/libs/supabase";
+import ErrorMessage from "./ErrorMessage";
 
 export default function LoginForm() {
   const loginSchema = z.object({
@@ -19,14 +20,22 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
+
+    if (error) {
+      setError("root", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-400/80">
@@ -48,6 +57,8 @@ export default function LoginForm() {
             type="password"
             placeholder="Password"
           />
+
+          {errors.root && <ErrorMessage message={errors.root.message} />}
 
           <button
             type="submit"
