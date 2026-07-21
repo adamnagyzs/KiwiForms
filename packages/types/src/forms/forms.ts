@@ -41,7 +41,7 @@ interface ValidationRule {
 
 type ValidationRuleValue = string | number | boolean | Date;
 
-interface CreateFormDto {
+export interface CreateFormDto {
   name: string;
   description?: string;
   questions: CreateQuestionDto[];
