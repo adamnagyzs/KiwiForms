@@ -1,4 +1,4 @@
-type InputType =
+export type InputType =
   | "text"
   | "number"
   | "checkbox"
@@ -40,3 +40,26 @@ interface ValidationRule {
 }
 
 type ValidationRuleValue = string | number | boolean | Date;
+
+interface CreateFormDto {
+  name: string;
+  description?: string;
+  questions: CreateQuestionDto[];
+}
+
+export interface CreateQuestionDto {
+  title: string;
+  input_type: InputType;
+  question_inputs: CreateQuestionInputDto[];
+  validation_rules: ValidationRule;
+}
+
+interface CreateQuestionInputDto {
+  label: string;
+  placeholder?: string;
+  default_value?: string;
+}
+
+export type EditableQuestion = CreateQuestionDto & {
+  id: string;
+};
