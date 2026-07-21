@@ -10,7 +10,6 @@ type AuthGuardProps = {
 
 function AuthGuard({ children }: AuthGuardProps) {
   const { session, isIdle, isLoading } = useAuth();
-  console.log(session);
 
   if (isIdle || isLoading) {
     return <LoadingScreen />;
