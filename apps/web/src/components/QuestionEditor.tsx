@@ -1,5 +1,6 @@
 import {
   useFieldArray,
+  useWatch,
   type Control,
   type UseFormRegister,
 } from "react-hook-form";
@@ -19,7 +20,12 @@ export default function QuestionEditor({
   register,
   removeQuestion,
 }: QuestionEditorProps) {
-  const selectedTypeName = `questions.${index}.input_type` as const;
+  const selectedType = useWatch({
+    control,
+    name: `questions.${index}.input_type`,
+  });
+
+  const chooseableType = ["checkbox", "radio", "select"].includes(selectedType);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -42,7 +48,7 @@ export default function QuestionEditor({
         <label className="font-medium">Answer type</label>
 
         <select
-          {...register(selectedTypeName)}
+          {...register(`questions.${index}.input_type`)}
           className="w-full rounded-md border px-3 py-2"
         >
           <option value="text">Text</option>
@@ -67,41 +73,43 @@ export default function QuestionEditor({
         </select>
       </div>
 
-      <div className="space-y-3">
-        <label className="font-medium">Options</label>
+      {chooseableType && (
+        <div className="space-y-3">
+          <label className="font-medium">Options</label>
 
-        {fields.map((field, optionIndex) => (
-          <div key={field.id} className="flex gap-2">
-            <input
-              {...register(
-                `questions.${index}.question_inputs.${optionIndex}.label`,
-              )}
-              className="flex-1 rounded-md border px-3 py-2"
-              placeholder={`Option ${optionIndex + 1}`}
-            />
+          {fields.map((field, optionIndex) => (
+            <div key={field.id} className="flex gap-2">
+              <input
+                {...register(
+                  `questions.${index}.question_inputs.${optionIndex}.label`,
+                )}
+                className="flex-1 rounded-md border px-3 py-2"
+                placeholder={`Option ${optionIndex + 1}`}
+              />
 
-            <button
-              type="button"
-              onClick={() => remove(optionIndex)}
-              className="bg-red-500 text-white px-3 rounded-md cursor-pointer"
-            >
-              X
-            </button>
-          </div>
-        ))}
+              <button
+                type="button"
+                onClick={() => remove(optionIndex)}
+                className="bg-red-500 text-white px-3 rounded-md cursor-pointer"
+              >
+                X
+              </button>
+            </div>
+          ))}
 
-        <button
-          type="button"
-          onClick={() =>
-            append({
-              label: "",
-            })
-          }
-          className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer"
-        >
-          + Add option
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={() =>
+              append({
+                label: "",
+              })
+            }
+            className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer"
+          >
+            + Add option
+          </button>
+        </div>
+      )}
 
       <button
         type="button"

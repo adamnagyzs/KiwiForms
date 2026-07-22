@@ -2,7 +2,7 @@ import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import QuestionEditor from "@/components/QuestionEditor";
+import QuestionEditor from "@/components/forms/QuestionEditor";
 import { createFormSchema, type FormValues } from "@/types/create-form";
 
 export default function CreateForm() {
