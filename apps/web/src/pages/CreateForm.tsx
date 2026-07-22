@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import QuestionEditor from "@/components/forms/QuestionEditor";
 import { createFormSchema, type FormValues } from "@/types/create-form";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/TextArea";
 
 export default function CreateForm() {
   const { register, control, handleSubmit } = useForm<FormValues>({
@@ -35,16 +37,18 @@ export default function CreateForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-xl space-y-5"
       >
-        <input
+        <Input
           {...register("name")}
           placeholder="Form name"
           className="w-full border rounded-md px-3 py-2"
+          label=""
         />
 
-        <textarea
+        <Textarea
           {...register("description")}
           placeholder="Description"
           className="w-full border rounded-md px-3 py-2"
+          label=""
         />
 
         {fields.map((field, index) => (
@@ -72,14 +76,14 @@ export default function CreateForm() {
               },
             })
           }
-          className="bg-teal-700 text-white px-4 py-2 rounded-md"
+          className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer"
         >
           + Add Question
         </button>
 
         <button
           type="submit"
-          className="w-full bg-teal-900 text-white py-3 rounded-md"
+          className="w-full bg-teal-900 text-white py-3 rounded-md cursor-pointer"
         >
           Save Form
         </button>
