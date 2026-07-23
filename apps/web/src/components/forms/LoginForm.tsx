@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import Input from "../ui/Input";
 import supabase from "@/libs/supabase";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 export default function LoginForm() {
   const loginSchema = z.object({
