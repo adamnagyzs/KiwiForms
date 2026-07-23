@@ -5,6 +5,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
+import { FormsModule } from "./forms/forms.module";
 import { SupabaseModule } from "./supabase/supabase.module";
 
 @Module({
@@ -12,6 +13,7 @@ import { SupabaseModule } from "./supabase/supabase.module";
     ConfigModule.forRoot({ isGlobal: true }),
     SupabaseModule,
     AuthModule,
+    FormsModule,
   ],
   controllers: [AppController],
   providers: [
