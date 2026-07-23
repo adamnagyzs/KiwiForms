@@ -6,9 +6,12 @@ import QuestionEditor from "@/components/forms/QuestionEditor";
 import { createFormSchema, type FormValues } from "@/types/create-form";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/TextArea";
-import type { EditableQuestion } from "@kiwiforms/types";
+import { createForm } from "@/services/forms.service";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateForm() {
+  const navigate = useNavigate();
+
   const { register, control, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(createFormSchema),
 
@@ -27,7 +30,15 @@ export default function CreateForm() {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
+    try {
+      const form = await createForm(data);
+
+      console.log(form);
+
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
