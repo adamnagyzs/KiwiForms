@@ -6,6 +6,7 @@ import QuestionEditor from "@/components/forms/QuestionEditor";
 import { createFormSchema, type FormValues } from "@/types/create-form";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/TextArea";
+import type { EditableQuestion } from "@kiwiforms/types";
 
 export default function CreateForm() {
   const { register, control, handleSubmit } = useForm<FormValues>({
