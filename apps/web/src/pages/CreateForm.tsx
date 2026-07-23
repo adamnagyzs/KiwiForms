@@ -8,6 +8,7 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/TextArea";
 import { createForm } from "@/services/forms.service";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreateForm() {
   const navigate = useNavigate();
@@ -29,16 +30,19 @@ export default function CreateForm() {
     name: "questions",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      const form = await createForm(data);
-
+  const { mutateAsync: createFormMutation, isPending } = useMutation({
+    mutationFn: createForm,
+    onSuccess: (form) => {
       console.log(form);
-
       navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    await createFormMutation(data);
   };
 
   return (
@@ -95,9 +99,10 @@ export default function CreateForm() {
 
         <button
           type="submit"
+          disabled={isPending}
           className="w-full bg-teal-900 text-white py-3 rounded-md cursor-pointer"
         >
-          Save Form
+          {isPending ? "Saving form..." : "Save"}
         </button>
       </form>
     </div>
