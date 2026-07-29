@@ -6,3 +6,9 @@ export const createForm = async (dto: CreateFormDto): Promise<Form> => {
 
   return response.data;
 };
+
+export async function getForms(): Promise<Form[]> {
+  const response = await axiosClient.get<Form[]>("/forms");
+
+  return response.data;
+}

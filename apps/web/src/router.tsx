@@ -13,6 +13,7 @@ import { GuestLayout } from "./components/layouts/guest.layout";
 import HomePage from "./pages/HomePage";
 import { UserProvider } from "./contexts/user.context";
 import CreateForm from "./pages/CreateForm";
+import FormPage from "./pages/FormPage";
 
 const router = createBrowserRouter(
   [
@@ -35,6 +36,10 @@ const router = createBrowserRouter(
       children: [
         { path: unauthenticatedRoutePaths.signIn, element: <LoginForm /> },
         { path: unauthenticatedRoutePaths.signUp, element: <SignupForm /> },
+        {
+          path: unauthenticatedRoutePaths.form,
+          element: <FormPage />,
+        },
       ],
     },
     {
