@@ -8,6 +8,7 @@ import {
 import type { FormValues } from "@/types/create-form";
 import Input from "../ui/Input";
 import Select from "../ui/Select";
+import { QUESTION_INPUT_TYPE_OPTIONS } from "@/utils/consts";
 
 type QuestionEditorProps = {
   index: number;
@@ -49,18 +50,7 @@ export default function QuestionEditor({
         label="Answer type"
         {...register(`questions.${index}.input_type`)}
         className="w-full rounded-md border px-3 py-2"
-        options={[
-          { value: "text", label: "Text" },
-          { value: "number", label: "Number" },
-          { value: "textarea", label: "Text area" },
-          { value: "checkbox", label: "Checkbox" },
-          { value: "radio", label: "Radio" },
-          { value: "select", label: "Select" },
-          { value: "date", label: "Date" },
-          { value: "date-range", label: "Date range" },
-          { value: "time", label: "Time" },
-          { value: "time-range", label: "Time range" },
-        ]}
+        options={QUESTION_INPUT_TYPE_OPTIONS}
       />
 
       {chooseableType && (
@@ -97,20 +87,21 @@ export default function QuestionEditor({
                 label: "",
               })
             }
-            className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer"
+            className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-teal-800"
           >
             + Add option
           </button>
         </div>
       )}
-
-      <button
-        type="button"
-        onClick={() => removeQuestion(index)}
-        className="bg-red-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-red-800"
-      >
-        Remove question
-      </button>
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => removeQuestion(index)}
+          className="bg-red-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-red-800"
+        >
+          Remove question
+        </button>
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ type SelectOption = {
 type SelectProps = {
   label: string;
   error?: string;
-  options: SelectOption[];
+  options: ReadonlyArray<SelectOption>;
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
 export default function Select({
