@@ -5,9 +5,9 @@ import { SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import TextInput from "./TextInput";
+import Input from "../ui/Input";
 import supabase from "@/libs/supabase";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 export default function LoginForm() {
   const loginSchema = z.object({
@@ -43,14 +43,14 @@ export default function LoginForm() {
         <h2 className="mb-8 text-2xl font-bold text-white">Login</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <TextInput
+          <Input
             label="Email"
             error={errors.email?.message}
             {...register("email")}
             type="email"
             placeholder="Email"
           />
-          <TextInput
+          <Input
             label="Password"
             error={errors.password?.message}
             {...register("password")}

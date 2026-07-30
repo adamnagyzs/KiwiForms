@@ -1,17 +1,17 @@
 import type { InputHTMLAttributes } from "react";
 import ErrorMessage from "./ErrorMessage";
 
-type TextInputProps = {
+type InputProps = {
   label: string;
   error?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export default function TextInput({
+export default function Input({
   label,
   error,
   className = "",
   ...props
-}: TextInputProps) {
+}: InputProps) {
   return (
     <div>
       <label className="block mb-1 text-sm font-medium text-teal-50">

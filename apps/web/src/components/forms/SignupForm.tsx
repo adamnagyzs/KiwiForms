@@ -5,8 +5,8 @@ import { unauthenticatedRoutePaths } from "@/config/router-paths";
 import { useMutation } from "@tanstack/react-query";
 import { authService } from "@/services/auth.service";
 
-import TextInput from "./TextInput";
-import ErrorMessage from "./ErrorMessage";
+import Input from "../ui/Input";
+import ErrorMessage from "../ui/ErrorMessage";
 import { Link } from "react-router-dom";
 
 const signupSchema = z
@@ -62,7 +62,7 @@ export default function SignupForm() {
         </h2>
 
         <form className="space-y-4 px-2" onSubmit={handleSubmit(onSubmit)}>
-          <TextInput
+          <Input
             label="Email"
             error={errors.email?.message}
             {...register("email")}
@@ -70,7 +70,7 @@ export default function SignupForm() {
             placeholder="Email"
           />
 
-          <TextInput
+          <Input
             label="Password"
             error={errors.password?.message}
             {...register("password")}
@@ -78,7 +78,7 @@ export default function SignupForm() {
             placeholder="Password"
           />
 
-          <TextInput
+          <Input
             label="Confirm Password"
             error={errors.confirmPassword?.message}
             {...register("confirmPassword")}
@@ -86,7 +86,7 @@ export default function SignupForm() {
             placeholder="Password"
           />
 
-          <TextInput
+          <Input
             label="Displayed Username"
             error={errors.userName?.message}
             {...register("userName")}
