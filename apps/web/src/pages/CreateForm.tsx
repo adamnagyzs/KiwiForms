@@ -32,8 +32,7 @@ export default function CreateForm() {
 
   const { mutateAsync: createFormMutation, isPending } = useMutation({
     mutationFn: createForm,
-    onSuccess: (form) => {
-      console.log(form);
+    onSuccess: () => {
       navigate("/");
     },
     onError: (error) => {
@@ -55,16 +54,16 @@ export default function CreateForm() {
       >
         <Input
           {...register("name")}
-          placeholder="Form name"
+          placeholder="Pineapple on Pizza?"
           className="w-full border rounded-md px-3 py-2"
-          label=""
+          label="Form title"
         />
 
         <Textarea
           {...register("description")}
-          placeholder="Description"
+          placeholder="One simple question. One controversial answer. Vote and see the results."
           className="w-full border rounded-md px-3 py-2"
-          label=""
+          label="Form description"
         />
 
         {fields.map((field, index) => (
@@ -92,7 +91,7 @@ export default function CreateForm() {
               },
             })
           }
-          className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer"
+          className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-teal-800"
         >
           + Add Question
         </button>
@@ -100,9 +99,9 @@ export default function CreateForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-teal-900 text-white py-3 rounded-md cursor-pointer"
+          className="w-full bg-teal-800 text-white py-3 rounded-md cursor-pointer hover:bg-teal-900"
         >
-          {isPending ? "Saving form..." : "Save"}
+          {isPending ? "Saving form..." : "Save form"}
         </button>
       </form>
     </div>
