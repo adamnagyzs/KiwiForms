@@ -9,12 +9,19 @@ import Textarea from "@/components/ui/TextArea";
 import { createForm } from "@/services/forms.service";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 export default function CreateForm() {
   const navigate = useNavigate();
 
-  const { register, control, handleSubmit } = useForm<FormValues>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: zodResolver(createFormSchema),
+    mode: "onSubmit",
 
     defaultValues: {
       name: "",
@@ -57,6 +64,7 @@ export default function CreateForm() {
           placeholder="Pineapple on Pizza?"
           className="w-full border rounded-md px-3 py-2"
           label="Form title"
+          error={errors.name?.message}
         />
 
         <Textarea
@@ -73,6 +81,7 @@ export default function CreateForm() {
             control={control}
             register={register}
             removeQuestion={remove}
+            errors={errors}
           />
         ))}
 
@@ -95,6 +104,12 @@ export default function CreateForm() {
         >
           + Add Question
         </button>
+        <ErrorMessage
+          message={
+            errors.questions?.root?.message ??
+            (errors.questions?.message as unknown as string)
+          }
+        />
 
         <button
           type="submit"
