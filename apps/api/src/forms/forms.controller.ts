@@ -27,8 +27,11 @@ export class FormsController {
   }
 
   @Get(":id")
-  getFormForSubmission(@Param("id") formId: string): Promise<Form> {
-    return this.formsService.getFormForSubmission(formId);
+  getFormForSubmission(
+    @CurrentUser() user: DatabaseUser,
+    @Param("id") formId: string,
+  ): Promise<Form> {
+    return this.formsService.getUserFormById(user.id, formId);
   }
 
   @Post()
