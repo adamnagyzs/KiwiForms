@@ -1,32 +1,31 @@
 import {
   useFieldArray,
   useWatch,
-  type Control,
-  type UseFormRegister,
-  type FieldErrors,
+  useFormContext,
+  UseFieldArrayRemove,
 } from "react-hook-form";
 
-import type { FormValues } from "@/types/create-form";
 import Input from "../ui/Input";
 import Select from "../ui/Select";
 import { QUESTION_INPUT_TYPE_OPTIONS } from "@/utils/consts";
 import ErrorMessage from "../ui/ErrorMessage";
+import { FormValues } from "@/types/create-form";
 
 type QuestionEditorProps = {
   index: number;
-  control: Control<FormValues>;
-  register: UseFormRegister<FormValues>;
-  removeQuestion: (index: number) => void;
-  errors: FieldErrors<FormValues>;
+  removeQuestion: UseFieldArrayRemove;
 };
 
 export default function QuestionEditor({
   index,
-  control,
-  register,
   removeQuestion,
-  errors,
 }: QuestionEditorProps) {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<FormValues>();
+
   const selectedType = useWatch({
     control,
     name: `questions.${index}.input_type`,

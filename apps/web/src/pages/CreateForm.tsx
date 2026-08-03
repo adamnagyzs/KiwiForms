@@ -1,4 +1,9 @@
-import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  FormProvider,
+  type SubmitHandler,
+} from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,26 +19,25 @@ import ErrorMessage from "@/components/ui/ErrorMessage";
 export default function CreateForm() {
   const navigate = useNavigate();
 
+  const methods = useForm<FormValues>({
+    resolver: zodResolver(createFormSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      name: "",
+      description: "",
+      questions: [],
+    },
+  });
+
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(createFormSchema),
-    mode: "onSubmit",
-
-    defaultValues: {
-      name: "",
-      description: "",
-
-      questions: [],
-    },
-  });
+  } = methods;
 
   const { fields, append, remove } = useFieldArray({
     control,
-
     name: "questions",
   });
 
@@ -41,9 +45,6 @@ export default function CreateForm() {
     mutationFn: createForm,
     onSuccess: () => {
       navigate("/");
-    },
-    onError: (error) => {
-      console.error(error);
     },
   });
 
@@ -54,71 +55,64 @@ export default function CreateForm() {
   return (
     <div className="flex flex-col items-center gap-5">
       <h1 className="text-4xl my-7">Create Form</h1>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-xl space-y-5"
-      >
-        <Input
-          {...register("name")}
-          placeholder="Pineapple on Pizza?"
-          className="w-full border rounded-md px-3 py-2"
-          label="Form title"
-          error={errors.name?.message}
-        />
-
-        <Textarea
-          {...register("description")}
-          placeholder="One simple question. One controversial answer. Vote and see the results."
-          className="w-full border rounded-md px-3 py-2"
-          label="Form description"
-        />
-
-        {fields.map((field, index) => (
-          <QuestionEditor
-            key={field.id}
-            index={index}
-            control={control}
-            register={register}
-            removeQuestion={remove}
-            errors={errors}
+      <FormProvider {...methods}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-xl space-y-5"
+        >
+          <Input
+            {...register("name")}
+            placeholder="Pineapple on Pizza?"
+            className="w-full border rounded-md px-3 py-2"
+            label="Form title"
+            error={errors.name?.message}
           />
-        ))}
 
-        <button
-          type="button"
-          onClick={() =>
-            append({
-              title: "",
+          <Textarea
+            {...register("description")}
+            placeholder="One simple question. One controversial answer. Vote and see the results."
+            className="w-full border rounded-md px-3 py-2"
+            label="Form description"
+          />
 
-              input_type: "text",
+          {fields.map((field, index) => (
+            <QuestionEditor
+              key={field.id}
+              index={index}
+              removeQuestion={remove}
+            />
+          ))}
 
-              question_inputs: [],
-
-              validation_rules: {
-                rules: {},
-              },
-            })
-          }
-          className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-teal-800"
-        >
-          + Add Question
-        </button>
-        <ErrorMessage
-          message={
-            errors.questions?.root?.message ??
-            (errors.questions?.message as unknown as string)
-          }
-        />
-
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full bg-teal-800 text-white py-3 rounded-md cursor-pointer hover:bg-teal-900"
-        >
-          {isPending ? "Saving form..." : "Save form"}
-        </button>
-      </form>
+          <button
+            type="button"
+            onClick={() =>
+              append({
+                title: "",
+                input_type: "text",
+                question_inputs: [],
+                validation_rules: {
+                  rules: {},
+                },
+              })
+            }
+            className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-teal-800"
+          >
+            + Add Question
+          </button>
+          <ErrorMessage
+            message={
+              errors.questions?.root?.message ?? errors.questions?.message
+            }
+          />
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-teal-800 text-white py-3 rounded-md cursor-pointer hover:bg-teal-900"
+          >
+            {isPending ? "Saving form..." : "Save form"}
+          </button>
+        </form>
+      </FormProvider>
     </div>
   );
 }
