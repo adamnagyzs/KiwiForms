@@ -4,16 +4,18 @@ import ErrorMessage from "./ErrorMessage";
 type InputProps = {
   label: string;
   error?: string;
+  wrapperClassName?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export default function Input({
   label,
   error,
   className = "",
+  wrapperClassName = "",
   ...props
 }: InputProps) {
   return (
-    <div>
+    <div className={wrapperClassName}>
       <label className="block mb-1 text-sm font-medium text-teal-50">
         {label}
       </label>

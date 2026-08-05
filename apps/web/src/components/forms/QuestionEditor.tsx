@@ -1,28 +1,31 @@
 import {
   useFieldArray,
   useWatch,
-  type Control,
-  type UseFormRegister,
+  useFormContext,
+  UseFieldArrayRemove,
 } from "react-hook-form";
 
-import type { FormValues } from "@/types/create-form";
 import Input from "../ui/Input";
 import Select from "../ui/Select";
 import { QUESTION_INPUT_TYPE_OPTIONS } from "@/utils/consts";
+import ErrorMessage from "../ui/ErrorMessage";
+import { FormValues } from "@/types/create-form";
 
 type QuestionEditorProps = {
   index: number;
-  control: Control<FormValues>;
-  register: UseFormRegister<FormValues>;
-  removeQuestion: (index: number) => void;
+  removeQuestion: UseFieldArrayRemove;
 };
 
 export default function QuestionEditor({
   index,
-  control,
-  register,
   removeQuestion,
 }: QuestionEditorProps) {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<FormValues>();
+
   const selectedType = useWatch({
     control,
     name: `questions.${index}.input_type`,
@@ -43,6 +46,7 @@ export default function QuestionEditor({
           className="w-full rounded-md border px-3 py-2"
           placeholder="Question title"
           label="Question Title"
+          error={errors.questions?.[index]?.title?.message}
         />
       </div>
 
@@ -55,28 +59,32 @@ export default function QuestionEditor({
 
       {chooseableType && (
         <div className="space-y-3">
-          <label className="block mb-1 text-sm font-medium text-teal-50">
-            Options
-          </label>
-
           {fields.map((field, optionIndex) => (
-            <div key={field.id} className="flex gap-2">
+            <div key={field.id} className="flex gap-2 w-full items-end">
               <Input
                 {...register(
                   `questions.${index}.question_inputs.${optionIndex}.label`,
                 )}
                 className="flex-1 rounded-md border px-3 py-2"
                 placeholder={`Option ${optionIndex + 1}`}
-                label=""
+                label={`Option ${optionIndex + 1}`}
+                wrapperClassName="flex-1"
               />
 
               <button
                 type="button"
                 onClick={() => remove(optionIndex)}
-                className="bg-red-500 text-white px-4 rounded-md cursor-pointer hover:bg-red-600 h-11 mt-1"
+                className="bg-red-500 text-white px-4 rounded-md cursor-pointer hover:bg-red-600 h-11"
               >
                 X
               </button>
+
+              <ErrorMessage
+                message={
+                  errors.questions?.[index]?.question_inputs?.[optionIndex]
+                    ?.label?.message
+                }
+              />
             </div>
           ))}
 

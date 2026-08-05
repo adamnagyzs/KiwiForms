@@ -10,3 +10,16 @@ export const QUESTION_INPUT_TYPE_OPTIONS = [
   { value: "time", label: "Time" },
   { value: "time-range", label: "Time range" },
 ] as const;
+
+export const input_type = [
+  "text",
+  "number",
+  "checkbox",
+  "radio",
+  "textarea",
+  "select",
+  "date",
+  "date-range",
+  "time",
+  "time-range",
+] as const;
