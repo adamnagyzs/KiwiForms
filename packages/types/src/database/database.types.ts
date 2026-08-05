@@ -226,7 +226,13 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      create_form_submission: {
+        Args: {
+          p_form_id: string;
+          p_answers: Json;
+        };
+        Returns: string;
+      };
     };
     Enums: {
       [_ in never]: never;

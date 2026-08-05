@@ -9,8 +9,7 @@ export type ValidationRuleRow =
 export type FormSubmissionRow =
   Database["public"]["Tables"]["form_submissions"]["Row"];
 
-export type QuestionIdRow = Pick<QuestionRow, "id">;
-export type FormSubmissionIdRow = Pick<FormSubmissionRow, "id">;
+export type FormIdRow = Pick<FormRow, "id">;
 
 export type QuestionWithRelations = QuestionRow & {
   question_inputs: QuestionInputRow[];
