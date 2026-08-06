@@ -14,6 +14,7 @@ import HomePage from "./pages/HomePage";
 import { UserProvider } from "./contexts/user.context";
 import CreateForm from "./pages/CreateForm";
 import FormPage from "./pages/FormPage";
+import EditFormPage from "./pages/EditFormPage";
 
 const router = createBrowserRouter(
   [
@@ -28,20 +29,38 @@ const router = createBrowserRouter(
           path: authenticatedRoutePaths.root,
           element: <HomePage />,
         },
-        { path: authenticatedRoutePaths.createForm, element: <CreateForm /> },
+        {
+          path: authenticatedRoutePaths.createForm,
+          element: <CreateForm />,
+        },
+        {
+          path: authenticatedRoutePaths.form,
+          element: <FormPage />,
+        },
+        {
+          path: authenticatedRoutePaths.editForm,
+          element: <EditFormPage />,
+        },
       ],
     },
     {
       element: <RouteWrapper guard={GuestGuard} layout={GuestLayout} />,
       children: [
-        { path: unauthenticatedRoutePaths.signIn, element: <LoginForm /> },
-        { path: unauthenticatedRoutePaths.signUp, element: <SignupForm /> },
+        {
+          path: unauthenticatedRoutePaths.signIn,
+          element: <LoginForm />,
+        },
+        {
+          path: unauthenticatedRoutePaths.signUp,
+          element: <SignupForm />,
+        },
         {
           path: unauthenticatedRoutePaths.form,
           element: <FormPage />,
         },
       ],
     },
+
     {
       path: "/",
       element: <Navigate to={unauthenticatedRoutePaths.signIn} replace />,

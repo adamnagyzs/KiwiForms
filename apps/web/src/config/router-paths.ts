@@ -5,11 +5,12 @@ export const unauthenticatedRoutePaths = Object.freeze({
   forgotPassword: "/auth/forgot-password",
   resetPassword: "/auth/reset-password",
   home: "/home",
-  form: "/forms/:id",
+  form: "/forms/guest/:id",
 });
 
 export const authenticatedRoutePaths = Object.freeze({
   root: "/",
-
   createForm: "/createform",
+  form: "/forms/:id",
+  editForm: "/forms/:id/edit",
 });
