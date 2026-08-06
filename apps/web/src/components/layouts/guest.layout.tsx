@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Header from "../common/Header";
 
 function GuestLayout() {
   return (
-    <div className="p-4">
+    <div className="bg-slate-400/80 min-h-screen">
+      <Header />
       <Outlet />
     </div>
   );
