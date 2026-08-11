@@ -11,10 +11,8 @@ import type {
   Database,
   Form,
   FormRow,
-  FormSubmissionIdRow,
   FormWithRelations,
   Json,
-  QuestionIdRow,
   QuestionRow,
   UpdateFormDto,
   UpdateQuestionDto,
@@ -223,8 +221,7 @@ export class FormsService {
     const { data: existingQuestions, error } = await this.supabaseAdmin
       .from("questions")
       .select("id")
-      .eq("form_id", formId)
-      .returns<QuestionIdRow[]>();
+      .eq("form_id", formId);
 
     if (error) {
       throw new BadRequestException(
@@ -367,8 +364,7 @@ export class FormsService {
     const { data: questions, error: questionsError } = await this.supabaseAdmin
       .from("questions")
       .select("id")
-      .eq("form_id", formId)
-      .returns<QuestionIdRow[]>();
+      .eq("form_id", formId);
 
     if (questionsError) {
       throw new BadRequestException(
@@ -384,8 +380,7 @@ export class FormsService {
       await this.supabaseAdmin
         .from("form_submissions")
         .select("id")
-        .eq("form_id", formId)
-        .returns<FormSubmissionIdRow[]>();
+        .eq("form_id", formId);
 
     if (submissionsError) {
       throw new BadRequestException(
