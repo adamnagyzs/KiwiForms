@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from "@nestjs/common";
+import { Throttle } from "@nestjs/throttler";
 import type {
   CreateFormSubmissionDto,
   DatabaseUser,
@@ -43,6 +44,7 @@ export class FormSubmissionsController {
   }
 
   @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post()
   createFormSubmission(
     @Body() body: CreateFormSubmissionDto,
