@@ -9,11 +9,14 @@
     "dev": "npm run build --workspace=@kiwiforms/types && turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
+    "check": "npm run build && npm run lint",
     "test": "turbo test",
     "clean": "turbo clean && rm -rf node_modules",
-    "gen:db-types": "npm run gen:db-types --workspace=@kiwiforms/types"
+    "gen:db-types": "npm run gen:db-types --workspace=@kiwiforms/types",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "turbo": "^2.10.4",
     "typescript": "^5.8.3"
   },
