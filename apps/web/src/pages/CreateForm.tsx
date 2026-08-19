@@ -1,23 +1,13 @@
-import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createFormSchema, type FormValues } from "@/types/create-form";
-import { createForm } from "@/services/forms.service";
+import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+
+import type { FormValues } from "@/types/create-form";
+import { createForm } from "@/services/forms.service";
 import FormEditor from "@/components/forms/FormEditor";
 
 export default function CreateForm() {
   const navigate = useNavigate();
-
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(createFormSchema),
-    mode: "onSubmit",
-    defaultValues: {
-      name: "",
-      description: "",
-      questions: [],
-    },
-  });
 
   const { mutateAsync: createFormMutation, isPending } = useMutation({
     mutationFn: createForm,
@@ -31,11 +21,9 @@ export default function CreateForm() {
   };
 
   return (
-    <FormProvider {...methods}>
-      <div className="flex flex-col items-center gap-5">
-        <h1 className="text-4xl my-7">Create Form</h1>
-        <FormEditor onSubmit={onSubmit} isPending={isPending} />
-      </div>
-    </FormProvider>
+    <div className="flex flex-col items-center gap-5">
+      <h1 className="text-4xl my-7">Create Form</h1>
+      <FormEditor onSubmit={onSubmit} isPending={isPending} />
+    </div>
   );
 }
