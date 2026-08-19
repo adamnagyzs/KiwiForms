@@ -18,6 +18,7 @@ export default function EditFormPage() {
     data: form,
     isLoading,
     isError,
+    isSuccess,
   } = useQuery({
     queryKey: ["forms", id],
     queryFn: () => getForm(id!),
@@ -49,7 +50,7 @@ export default function EditFormPage() {
     return <LoadingScreen />;
   }
 
-  if (isError || !form) {
+  if (isError || !isSuccess) {
     return <div>Form not found.</div>;
   }
 
