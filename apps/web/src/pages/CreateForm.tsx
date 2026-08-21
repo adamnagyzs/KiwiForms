@@ -1,45 +1,13 @@
-import {
-  useForm,
-  useFieldArray,
-  FormProvider,
-  type SubmitHandler,
-} from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import QuestionEditor from "@/components/forms/QuestionEditor";
-import { createFormSchema, type FormValues } from "@/types/create-form";
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/TextArea";
-import { createForm } from "@/services/forms.service";
+import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import ErrorMessage from "@/components/ui/ErrorMessage";
+
+import type { FormValues } from "@/types/create-form";
+import { createForm } from "@/services/forms.service";
+import FormEditor from "@/components/forms/FormEditor";
 
 export default function CreateForm() {
   const navigate = useNavigate();
-
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(createFormSchema),
-    mode: "onSubmit",
-    defaultValues: {
-      name: "",
-      description: "",
-      questions: [],
-    },
-  });
-
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "questions",
-  });
 
   const { mutateAsync: createFormMutation, isPending } = useMutation({
     mutationFn: createForm,
@@ -55,64 +23,7 @@ export default function CreateForm() {
   return (
     <div className="flex flex-col items-center gap-5">
       <h1 className="text-4xl my-7">Create Form</h1>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-xl space-y-5"
-        >
-          <Input
-            {...register("name")}
-            placeholder="Pineapple on Pizza?"
-            className="w-full border rounded-md px-3 py-2"
-            label="Form title"
-            error={errors.name?.message}
-          />
-
-          <Textarea
-            {...register("description")}
-            placeholder="One simple question. One controversial answer. Vote and see the results."
-            className="w-full border rounded-md px-3 py-2"
-            label="Form description"
-          />
-
-          {fields.map((field, index) => (
-            <QuestionEditor
-              key={field.id}
-              index={index}
-              removeQuestion={remove}
-            />
-          ))}
-
-          <button
-            type="button"
-            onClick={() =>
-              append({
-                title: "",
-                input_type: "text",
-                question_inputs: [],
-                validation_rules: {
-                  rules: {},
-                },
-              })
-            }
-            className="bg-teal-700 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-teal-800"
-          >
-            + Add Question
-          </button>
-          <ErrorMessage
-            message={
-              errors.questions?.root?.message ?? errors.questions?.message
-            }
-          />
-          <button
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-teal-800 text-white py-3 rounded-md cursor-pointer hover:bg-teal-900"
-          >
-            {isPending ? "Saving form..." : "Save form"}
-          </button>
-        </form>
-      </FormProvider>
+      <FormEditor onSubmit={onSubmit} isPending={isPending} />
     </div>
   );
 }
