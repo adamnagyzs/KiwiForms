@@ -2,12 +2,10 @@ import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { unauthenticatedRoutePaths } from "@/config/router-paths";
-import { useMutation } from "@tanstack/react-query";
-import { authService } from "@/services/auth.service";
-
 import Input from "../ui/Input";
 import ErrorMessage from "../ui/ErrorMessage";
 import { Link } from "react-router-dom";
+import { useSignUp } from "@/hooks/mutations/useSignUp";
 
 const signupSchema = z
   .object({
@@ -41,9 +39,7 @@ export default function SignupForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) });
 
-  const { mutateAsync } = useMutation({
-    mutationFn: authService.signUp,
-  });
+  const { mutateAsync } = useSignUp();
 
   const onSubmit: SubmitHandler<SignupForm> = async (data) => {
     const dto = {

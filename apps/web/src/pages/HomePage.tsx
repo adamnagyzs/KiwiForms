@@ -1,38 +1,24 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getForms, deleteForm } from "@/services/forms.service";
 import { Link } from "react-router-dom";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { useGetForms } from "@/hooks/queries/useGetForms";
+import { useDeleteForm } from "@/hooks/mutations/useDeleteForm";
 
 export default function HomePage() {
-  const queryClient = useQueryClient();
-
   const [formToDelete, setFormToDelete] = useState<string | null>(null);
 
-  const {
-    data: forms,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["forms"],
-    queryFn: getForms,
-  });
+  const { data: forms, isLoading, isError, error } = useGetForms();
 
   const { mutateAsync: deleteFormMutation, isPending: isDeleting } =
-    useMutation({
-      mutationFn: deleteForm,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["forms"] });
-        setFormToDelete(null);
-      },
-    });
+    useDeleteForm();
 
   const handleConfirmDelete = async () => {
     if (formToDelete) {
       await deleteFormMutation(formToDelete);
+      setFormToDelete(null);
     }
   };
+
   if (isLoading) {
     return <p className="text-center mt-10">Loading...</p>;
   }
