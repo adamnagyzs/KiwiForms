@@ -1,49 +1,36 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import type { SubmitHandler } from "react-hook-form";
-
-import { getForm, updateForm, deleteForm } from "@/services/forms.service";
 import type { FormValues } from "@/types/create-form";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import FormEditor from "@/components/forms/FormEditor";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { useGetForm } from "@/hooks/queries/useGetForm";
+import { useUpdateForm } from "@/hooks/mutations/useUpdateForm";
+import { useDeleteForm } from "@/hooks/mutations/useDeleteForm";
 
 export default function EditFormPage() {
-  const { id } = useParams();
+  const { id = "" } = useParams();
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const {
-    data: form,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useQuery({
-    queryKey: ["forms", id],
-    queryFn: () => getForm(id!),
-    enabled: !!id,
-  });
+  const { data: form, isLoading, isError, isSuccess } = useGetForm(id);
 
   const { mutateAsync: updateFormMutation, isPending: isUpdating } =
-    useMutation({
-      mutationFn: updateForm,
-      onSuccess: () => navigate("/"),
-    });
+    useUpdateForm();
 
   const { mutateAsync: deleteFormMutation, isPending: isDeleting } =
-    useMutation({
-      mutationFn: deleteForm,
-      onSuccess: () => navigate("/"),
-    });
+    useDeleteForm();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     await updateFormMutation({ formId: id!, data });
+    navigate("/");
   };
 
   const handleConfirmDelete = async () => {
     await deleteFormMutation(id!);
     setIsDeleteModalOpen(false);
+    navigate("/");
   };
 
   if (isLoading) {

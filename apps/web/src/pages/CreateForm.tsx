@@ -1,23 +1,16 @@
 import type { SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-
 import type { FormValues } from "@/types/create-form";
-import { createForm } from "@/services/forms.service";
 import FormEditor from "@/components/forms/FormEditor";
+import { useCreateForm } from "@/hooks/mutations/useCreateForm";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateForm() {
   const navigate = useNavigate();
-
-  const { mutateAsync: createFormMutation, isPending } = useMutation({
-    mutationFn: createForm,
-    onSuccess: () => {
-      navigate("/");
-    },
-  });
+  const { mutateAsync: createFormMutation, isPending } = useCreateForm();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     await createFormMutation(data);
+    navigate("/");
   };
 
   return (
