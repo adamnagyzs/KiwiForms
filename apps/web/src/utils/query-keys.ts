@@ -1,6 +1,6 @@
-export const QUERY_KEYS = {
+export const QUERY_KEYS = Object.freeze({
   forms: {
-    all: ["forms"] as const,
-    detail: (id: string) => ["forms", id] as const,
+    all: ["forms"],
+    detail: (id: string) => ["forms", id],
   },
-};
+});

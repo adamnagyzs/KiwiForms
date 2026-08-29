@@ -10,7 +10,7 @@ import { useUpdateForm } from "@/hooks/mutations/useUpdateForm";
 import { useDeleteForm } from "@/hooks/mutations/useDeleteForm";
 
 export default function EditFormPage() {
-  const { id } = useParams();
+  const { id = "" } = useParams();
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
