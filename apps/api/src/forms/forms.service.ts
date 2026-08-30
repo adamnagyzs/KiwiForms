@@ -153,12 +153,11 @@ export class FormsService {
     return data;
   }
 
-  async getUserFormById(userId: string, formId: string): Promise<Form> {
+  async getUserFormById(formId: string): Promise<Form> {
     const { data, error } = await this.supabaseAdmin
       .from("forms")
       .select(FORM_SELECT)
       .eq("id", formId)
-      .eq("user_id", userId)
       .single<FormWithRelations>();
 
     if (error || !data) {
