@@ -16,6 +16,7 @@ import type {
 } from "@kiwiforms/types";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { FormsService } from "./forms.service";
+import { Public } from "../auth/decorators/public.decorator";
 
 @Controller("forms")
 export class FormsController {
@@ -27,6 +28,7 @@ export class FormsController {
   }
 
   @Get(":id")
+  @Public()
   getFormForSubmission(
     @CurrentUser() user: DatabaseUser,
     @Param("id") formId: string,
