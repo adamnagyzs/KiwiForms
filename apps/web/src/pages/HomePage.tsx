@@ -7,8 +7,6 @@ import { useDeleteForm } from "@/hooks/mutations/useDeleteForm";
 
 export default function HomePage() {
   const [formToDelete, setFormToDelete] = useState<string | null>(null);
-
-  // Egy state, amiben tároljuk, hogy épp melyik form linkjét másoltuk ki (a "Copied!" visszajelzéshez)
   const [copiedFormId, setCopiedFormId] = useState<string | null>(null);
 
   const { data: forms, isLoading, isError, error } = useGetForms();
@@ -23,11 +21,8 @@ export default function HomePage() {
     }
   };
 
-  // A megosztó függvény
   const handleShare = async (formId: string) => {
-    // Tiszta link: /forms/:id (nem /forms/guest/:id)
     const shareUrl = `${window.location.origin}/forms/${formId}`;
-
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopiedFormId(formId);
@@ -50,11 +45,9 @@ export default function HomePage() {
       <h1 className="flex justify-center text-4xl font-bold mt-10">
         Recent forms
       </h1>
-
       <div className="flex flex-col items-center space-y-6 mt-10">
         {forms?.map((form) => (
           <div key={form.id} className="w-150">
-            {/* Erre kattintva a készítő a bejelentkezett (saját) nézetét látja */}
             <Link to={`/forms/${form.id}`}>
               <div className="rounded-md border p-4 shadow transition hover:shadow-md bg-white">
                 <h2 className="text-xl font-bold">{form.name}</h2>
@@ -65,9 +58,7 @@ export default function HomePage() {
               </div>
             </Link>
 
-            {/* Gombok sora */}
             <div className="flex justify-end gap-4 mt-2 px-2">
-              {/* SHARE GOMB */}
               <button
                 type="button"
                 onClick={() => handleShare(form.id)}
